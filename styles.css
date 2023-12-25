@@ -1,0 +1,135 @@
+:root {
+    --Mypink: rgb(226,181,199);
+    --Myblack: rgb(47,47,47);
+    --Mywhite: rgb(215, 215, 215);
+
+}
+
+* {
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: var(--Myblack);
+    color: var(--Mywhite);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    /* background-color: grey; */
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+button {
+    cursor: pointer;
+}
+
+#inline-text-color {
+    color: var(--Mypink)
+}
+
+#task-form {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+
+    background-color: var(--Myblack);
+
+    height: auto;
+}
+
+#task-form-title{
+    flex: 1;
+    width: 100%;
+
+}
+#task-form-title, #create-task-btn {
+    border: 1px solid var(--Myblack);
+    box-shadow: 0px 0px 3px var(--Mywhite);
+    border-radius: 3px;
+    background-color: var(--Mypink);
+    color: var(--Myblack);
+    padding: 10px;
+}
+
+#tasks-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.task {
+    background-color: var(--Mywhite);
+    border-radius: 3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2px;
+    padding: 10px;
+    margin-bottom: 10px;
+    height: auto;
+    width: 100%;
+}
+
+.task input {
+    background-color: transparent;
+    color: var(--Myblack);
+    border: 0;
+    flex: 1;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-btn, .delete-btn {
+    border: 1px solid var(--Myblack);
+    box-shadow: 0px 0px 3px var(--Mywhite);
+    border-radius: 3px;
+    background-color: var(--Mypink);
+    color: var(--Myblack);
+    padding: 5px;
+
+}
+
+.task-checkbox {
+    background: transparent;
+    border: 2px solid var(--Myblack);
+    border-radius: 3px;
+    appearance: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* color: var(--Myblack); */
+    font-size: 20px;
+    cursor: pointer;
+
+    /* opacity to control checked status */
+}
+
+#theme-switch-container {
+    align-self: flex-end;
+    margin-top: 2em;
+    margin-right: 4em;
+    position: relative; 
+    scale: 1.5;  
+    cursor: pointer;
+}
+
+#moon-icon {
+    position: absolute; 
+    color: var(--Mypink);
+}
+
+#sun-icon {
+    position: absolute; 
+    color: var(--Mywhite);
+}
