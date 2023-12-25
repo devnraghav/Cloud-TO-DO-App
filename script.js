@@ -1,36 +1,32 @@
 const root = document.querySelector(":root");
 const root_styles = getComputedStyle(root);
-
-const form = document.querySelector("#task-form");
+const task_form = document.querySelector("#task-form");
 const task_input = document.querySelector("#task-form-title");
 const tasks_container = document.querySelector("#tasks-container");
 var app_status = document.querySelector("#status-message");
+const moon_icon = document.querySelector("#moon-icon");
+const sun_icon = document.querySelector("#sun-icon");
 
-var mode = 1;
-
-// 1 = dark
-// -1 = light
-
-function log_S() {
-    console.log(localStorage);
-}
-
-
-var tasks_obj = 
+var task_object = 
 {
     Tasks_array:
     [
         // {title:"task bro", checked:true},
         // {title:"grev", checked:false},
         // {title:"car efdijfoas", checked:true}
-
     ]
 };
 
-
 create_task = (task_title) => {
 
+    // check if input field is empty -> return error.
+    if (!task_title) {
+        displayerror("Please enter a task name.", "lightcoral");
+        return false;
+    }
 
+    // clear input field everytime we create a task.
+    task_input.value = "";
 
     // adding task to local storage.
     var current_storage = JSON.parse(localStorage.getItem("Tasks_key"));
@@ -41,17 +37,11 @@ create_task = (task_title) => {
         }
     });
 
-
-
     current_storage.Tasks_array.push(
         {title:task_title}
     );
 
     localStorage.setItem("Tasks_key", JSON.stringify(current_storage));
-
-    // logging storage
-    log_S();
-
 
     const new_task = document.createElement("div");
     new_task.classList.add("task");
@@ -87,25 +77,21 @@ create_task = (task_title) => {
 
     delete_btn.appendChild(delete_icon);
 
-
     const checkbox_container = document.createElement("button");
     checkbox_container.classList.add("task-checkbox");
     checkbox_container.style.color = "transparent";
     
-
     const checkbox_icon = document.createElement("i");
     checkbox_icon.classList.add("fas", "fa-check");
 
     checkbox_container.appendChild(checkbox_icon);
     new_task.appendChild(checkbox_container);
-    
 
     new_task_actions.appendChild(edit_btn);
     new_task_actions.appendChild(delete_btn);
     new_task.appendChild(new_task_title);
     new_task.appendChild(new_task_actions);
     tasks_container.appendChild(new_task);
-
 
     // editing and saving the task
     edit_btn.addEventListener("click", () => {
@@ -133,7 +119,6 @@ create_task = (task_title) => {
                 });
             }
 
-
             // Setting the text decoration to none if task is already checked (taskv title's text decoration is 'line-through')
             if (new_task_title.style.textDecoration == "line-through") {
                 new_task_title.style.textDecoration = "none";
@@ -143,93 +128,68 @@ create_task = (task_title) => {
         
         else if (save_icon.parentElement === edit_btn) {
             // saving
-
-
             edit_btn.replaceChild(edit_icon, save_icon)
             new_task_title.setAttribute("readonly", "readonly");
-
             new_task_title.style.textDecoration = old_decor;
-
-
             if (!isediting) {
                 let temp_storage = JSON.parse(localStorage.getItem("Tasks_key"));
-
                 temp_storage.Tasks_array.forEach(function(task, task_idx, task_array) {
                     if (name_replacement == task.title) {
-
-                        console.log(new_task_title.value);
+                        // console.log(new_task_title.value);
                         task.title = new_task_title.value;
-
                         localStorage.setItem("Tasks_key", JSON.stringify(temp_storage));
-                        log_S();
                     }
                 });
             }
         }
 
-
+        // Disable all buttons except the one currently responsible for editing this task.
         document.querySelectorAll("button").forEach(function(element) {
-            if (element != edit_btn){
-                if (isediting){
-                    element.disabled = true;
-                } else {
-                    element.disabled = false;
-                }
+            if (element != edit_btn) {
+                element.disabled = (isediting) ? true:false;
             }
         })
-
     });
 
     // deleting the task from local storage and frontend
     delete_btn.addEventListener("click", () => {
-
         let temp_storage = JSON.parse(localStorage.getItem("Tasks_key"));
-
         temp_storage.Tasks_array.forEach(function(obj, index, array) {
             if (obj.title == new_task_title.value) {
                 array.splice(index, 1);
-
                 localStorage.setItem("Tasks_key", JSON.stringify(temp_storage));
-
-                log_S();
             }
         });
-
         tasks_container.removeChild(new_task);
     });
 
     // checking off the task
     checkbox_container.addEventListener("click", () => {
+        old_decor = new_task_title.style.textDecoration;
         if (new_task.dataset.completed === "no") {
             new_task.dataset.completed = "yes";
             new_task_title.style.textDecoration = "line-through"
-
             checkbox_container.style.color = root_styles.getPropertyValue("--Myblack");
-
-
         } else if (new_task.dataset.completed === "yes") {
             new_task.dataset.completed = "no";
             new_task_title.style.textDecoration = "none"
-
             checkbox_container.style.color = "transparent";
         }
-
-        old_decor = new_task_title.style.textDecoration;
     });
 }
 
+// -1 = light. 1 = dark.
+var mode = 1;
 themes = () => {
+    moon_icon.style.visibility = (mode > 0) ? "hidden":"visible";
+    sun_icon.style.visibility = (mode > 0) ? "visible":"hidden";
+    app_status.style.color = (mode > 0) ? "lightgreen":"var(--Mywhite)";
+
     if (mode > 0) {
-
-        document.querySelector("#moon-icon").style.visibility = "hidden";
-        document.querySelector("#sun-icon").style.visibility = "visible";
-
-
+        // dark
         root.style.setProperty("--Mywhite", "rgb(215, 215, 215)");
         root.style.setProperty("--Myblack", "rgb(47,47,47)");
         root.style.setProperty("--Mypink", "rgb(226,181,199)");
-
-        app_status.style.color = "lightgreen";
         
         document.querySelectorAll(".edit-btn").forEach((del)=> {
             del.style.backgroundColor = "var(--Mypink)";
@@ -241,19 +201,11 @@ themes = () => {
         });
 
     } else {
-        
-        document.querySelector("#sun-icon").style.visibility = "hidden";
-        document.querySelector("#moon-icon").style.visibility = "visible";
-
-
-
+        // light
         root.style.setProperty("--Mywhite", "rgb(47,47,47)");
         root.style.setProperty("--Myblack", "rgb(215, 215, 215)");
         root.style.setProperty("--Mypink", "rgb(47,47,47)");
 
-        app_status.style.color = "rgb(47,47,47)";
-        
-
         document.querySelectorAll(".edit-btn").forEach((del)=> {
             del.style.backgroundColor = "var(--Myblack)";
             del.style.color = "var(--Mywhite)";
@@ -264,74 +216,56 @@ themes = () => {
         });
     }
 }
-
-
-
+themes(); // initialize themes.
 
 window.addEventListener("load", () => {
+    app_status.textContent = "Online";
+    app_status.style.color = "lightgreen";
 
     /* 
     Check if storage exists. If not then add a key and assign an empty table to it (Only once).
-
-    If storage already exists, retrieve all task objects. -- work to do
-
+    If storage already exists, retrieve all task objects.
     */
-
+    
+    // if storage already exists
     if (localStorage.getItem("Tasks_key")) {
-        console.log("Storage Exists.");
-        var local_task_object = JSON.parse(localStorage.getItem("Tasks_key"));
-
-
-        // We already know the tasks array exists because we add it if there's no local storage.
+        const temp = JSON.parse(localStorage.getItem("Tasks_key"));
         // Now we will loop through this array and create a task for each element (task) found and grab it's title to name our newly created task.
 
-
-        local_task_object.Tasks_array.forEach((task, task_idx) => { 
-            // task is an object and it's properties are title and checked.
-            // task index is important for arranging tasks by order or user preference (later).
-
-
-
+        // retrieving all existing tasks.
+        temp.Tasks_array.forEach((task) => { 
             create_task(task.title);
         });
 
-        // tasks were duplicating on every refresh/load because I forgot to update local storage after creating tasks from the data gathered on load. LOL.
-        localStorage.setItem("Tasks_key", JSON.stringify(local_task_object));
+        localStorage.setItem("Tasks_key", JSON.stringify(temp));
 
-
-
+    // if storage does NOT exist already.
     } else {
-        console.log("Storage doesn't Exist.");
-        // adding the non-existing key and converting it into json string.
-        localStorage.setItem("Tasks_key", JSON.stringify(tasks_obj));
-        log_S();
+        // Adding the a new key named "tasks_key" and converting our task object into JSON string.
+        localStorage.setItem("Tasks_key", JSON.stringify(task_object));
     }
 
-
-
-    form.addEventListener("submit", (event) => {
+    task_form.addEventListener("submit", (event) => {
         event.preventDefault();
-        // check if input field is empty -> return error.
-        if (!task_input.value) {
-            alert("⚠️ Please enter a task name.")
-            console.log("⚠️ Please enter a task name.");
-            return false
-        }
-     
         create_task(task_input.value);
-
-        // clear input field everytime we create a task.
-        task_input.value = "";
-
     });
 
-    app_status.innerHTML = "Online";
-    app_status.style.color = "lightgreen";
-
-    themes();
     // dark light mode
     document.getElementById("theme-switch-container").addEventListener("click", () => {
         mode *= -1;
         themes();
-    });    
+    });
 });
+
+window.addEventListener('error', function(event) {
+    displayerror(event.error, "lightcoral");
+});
+
+function displayerror(error, error_color) {
+    app_status.textContent = error;
+    app_status.style.color = error_color;
+    setTimeout(() => {
+        app_status.textContent = "Online";
+        app_status.style.color = "lightgreen";
+    }, 2000);
+}
