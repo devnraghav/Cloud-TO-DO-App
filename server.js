@@ -1,5 +1,5 @@
 // serverside for my to-do app.
-
+const config = require('./config.json');
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
@@ -12,7 +12,7 @@ app.use(express.json())
 
 
 // for one of the databases
-const my_connection_string = "mongodb+srv://raghav:whateverman@todocluster.ejgk890.mongodb.net/?retryWrites=true&w=majority";
+const my_connection_string = config.db_connect_str;
 
 
 // creating a new connection object to establish a conne3ction with our mongoDB database
