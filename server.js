@@ -12,6 +12,8 @@ app.use(express.json())
 
 
 // for one of the databases
+
+console.log(config.db_connect_str);
 const my_connection_string = config.db_connect_str;
 
 
