@@ -22,22 +22,8 @@ if (!localStorage.getItem("themes")) {
 
 
 function create_task (task_title, completed) {
-    // check if input field is empty -> return error.
-    if (!task_title) {
-        displayerror("Please enter a task name.", "lightcoral");
-        return false;
-    }
 
     task_input.value = ""; // clear input field everytime we create a task.
-
-    // outdated duplication check
-
-    // current_storage.Tasks_array.forEach(obj =>{
-    //     if (obj.title === task_title) {
-    //         return false
-    //     }
-    // });
-
 
     // UI RELATED
     const new_task = document.createElement("div");
@@ -266,12 +252,12 @@ function add_task (title, completed) {
     .then(res => res.json())
     .then(data => {
         if (data.result.code == 11000) {
-            displayerror(data.message, "lightcoral");
+            display_status("error", data.message);
             return false;
         }
         else {
             create_task(title, completed);
-            displayerror(data.message, "lightgreen");
+            display_status("success", data.message);
         }
     })
     .catch(e => {
@@ -284,7 +270,7 @@ function add_task (title, completed) {
 function update_task(title, completed, editing, new_title) {
     // update the completed property for our task in the database
 
-    // checking if we are saving anm edited task.
+    // checking if we are saving an edited task.
 
     fetch("http://localhost:3000/api/tasks", {
         method: "PUT",
@@ -347,13 +333,12 @@ window.addEventListener("load", async () => {
         event.preventDefault();
 
         if (task_input.value == "") {
-            displayerror("Please enter a task", "lightcoral");
+            display_status("error", "Please enter a task name.");
             return;
         } else {
         // add task document to database
             add_task(task_input.value, false);
         }
-
     });
 
     // initialize themes.
@@ -368,14 +353,26 @@ window.addEventListener("load", async () => {
 });
 
 window.addEventListener('error', function(event) {
-    displayerror(event.error, "lightcoral");
+    display_status("error", event.error);
 });
 
-function displayerror(error, error_color) {
-    app_status.textContent = "Error: "+error;
+function display_status(status_type, message) {
+
+    if (status_type == "success") {
+        error_color = "lightgreen";
+    }
+    else if (status_type == "error") {
+        error_color = "lightcoral";
+    }
+    else if (status_type == "warning") {
+        error_color = "orange";
+    }
+
+    app_status.textContent = message;
     app_status.style.color = error_color;
+
     setTimeout(() => {
         app_status.textContent = "Online";
         app_status.style.color = "lightgreen";
-    }, 2000);
+    }, 3000);
 }

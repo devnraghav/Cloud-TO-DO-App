@@ -59,7 +59,6 @@ button {
 
 #task-form-title:focus {
     outline: 0;
-    
 }
 
 #tasks-container {
@@ -82,11 +81,14 @@ button {
     width: 100%;
 }
 
-.task input {
+.task-title {
     background-color: transparent;
     color: var(--Myblack);
     border: 0;
     flex: 1;
+}
+.task-title:focus {
+    outline: 0;
 }
 
 .actions {
@@ -95,13 +97,13 @@ button {
 }
 
 .edit-btn, .delete-btn {
-    border: 1px solid var(--Myblack);
+    border: none;
     box-shadow: 0px 0px 3px var(--Mywhite);
     border-radius: 3px;
-    background-color: var(--Mypink);
+    background-color: transparent;
     color: var(--Myblack);
     padding: 5px;
-
+    font-size: 15px;
 }
 
 .task-checkbox {

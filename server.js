@@ -1,5 +1,5 @@
 // serverside for my to-do app.
-const config = require('./config.json');
+// const config = require('./config.json');
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
@@ -12,13 +12,13 @@ app.use(express.json())
 
 
 // for one of the databases
+password = "Access4meisme"
 
-console.log(config.db_connect_str);
-const my_connection_string = config.db_connect_str;
+const connection_string = `mongodb+srv://to_do_user:${password}@todo.zydosih.mongodb.net/?retryWrites=true&w=majority`;
 
 
 // creating a new connection object to establish a conne3ction with our mongoDB database
-mongoose.connect(my_connection_string, 
+mongoose.connect(connection_string, 
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
