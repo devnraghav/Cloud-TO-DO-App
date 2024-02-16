@@ -12,9 +12,9 @@ app.use(express.json())
 
 // for one of the databases
 
-const connection_string = "mongodb+srv://todo_user:password123456t@cluster0.yhyezts.mongodb.net/?retryWrites=true&w=majority"
+const connection_string = "mongodb+srv://<username>:<password>@cluster0.yhyezts.mongodb.net/?retryWrites=true&w=majority"
 
-// creating a new connection object to establish a conne3ction with our mongoDB database
+// creating a new connection object to establish a connection with our mongoDB database
 mongoose.connect(connection_string, 
     {
         useNewUrlParser: true,
