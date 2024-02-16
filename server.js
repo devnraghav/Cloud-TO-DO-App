@@ -5,17 +5,14 @@ const mongoose = require('mongoose');
 const app = express();
 const port = 3000;
 
-
 // serve static files from the public directory
 app.use(express.static('public'));
 app.use(express.json())
 
 
 // for one of the databases
-password = "Access4meisme"
 
-const connection_string = `mongodb+srv://to_do_user:${password}@todo.zydosih.mongodb.net/?retryWrites=true&w=majority`;
-
+const connection_string = "mongodb+srv://todo_user:password123456t@cluster0.yhyezts.mongodb.net/?retryWrites=true&w=majority"
 
 // creating a new connection object to establish a conne3ction with our mongoDB database
 mongoose.connect(connection_string, 

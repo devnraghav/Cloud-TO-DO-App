@@ -7,10 +7,6 @@ var app_status = document.querySelector("#status-message");
 const moon_icon = document.querySelector("#moon-icon");
 const sun_icon = document.querySelector("#sun-icon");
 
-// create a local storage key that stores a variable responsible for theme
-
-
-
 let theme_storage = {
     theme: 1
 }
@@ -287,7 +283,7 @@ function update_task(title, completed, editing, new_title) {
     })
     .then(res => res.json())
     .then(data => {
-        console.log(data);
+        // console.log(data);
     })
     .catch(e => {
         console.log(`ERROR while updating data: ${e}`);
@@ -308,7 +304,7 @@ function delete_task(title) {
     })
     .then(res => res.json())
     .then(data => {
-        console.log(data);
+        // console.log(data);
     })
     .catch(e => {
         console.log(`ERROR while deleting data: ${e}`);
